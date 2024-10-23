@@ -6,21 +6,23 @@ function getComputerChoice() {
 
 // get humans choice
 function getHumanChoice(humansChoice) {
-    return POSSIBLE_CHOICES.indexOf(humansChoice);
+    return POSSIBLE_CHOICES.indexOf(humansChoice.toLowerCase());
 }
 
 // play a round
 function playRound(humansChoice, computersChoice) {
     let outcome = (humansChoice - computersChoice + 3) % 3;
 
+    const displayOutcome = document.querySelector('#result');
+
     if(outcome === 1) {
-        console.log(`You win! ${POSSIBLE_CHOICES[humansChoice]} beats ${POSSIBLE_CHOICES[computersChoice]}.`);
+        displayOutcome.textContent = `You win! ${POSSIBLE_CHOICES[humansChoice]} beats ${POSSIBLE_CHOICES[computersChoice]}.`;
         humanScore++;
     } else if(outcome === 2) {
-        console.log(`You lose! ${POSSIBLE_CHOICES[computersChoice]} beats ${POSSIBLE_CHOICES[humansChoice]}.`);
+        displayOutcome.textContent = `You lose! ${POSSIBLE_CHOICES[computersChoice]} beats ${POSSIBLE_CHOICES[humansChoice]}.`;
         computerScore++;
     } else {
-        console.log("Tie!");
+        displayOutcome.textContent = "Tie!";
     }
 }
 
@@ -30,8 +32,6 @@ function playGame(MAXSCORE) {
     humanScore = 0;
 
     const gameBtns = document.querySelectorAll("button");
-    const scoreCounter = document.querySelector("#score");
-    const roundResult = document.querySelector("#roundResult");
 
     gameBtns.forEach((button) => {
         button.addEventListener('click', (event) => {
