@@ -5,11 +5,7 @@ function getComputerChoice() {
 }
 
 // get humans choice
-function getHumanChoice() {
-    let humansChoice;
-    while(!POSSIBLE_CHOICES.includes(humansChoice)) {
-        humansChoice = prompt("Please enter either Rock, paper or Scissors to play!").toLowerCase();
-    }
+function getHumanChoice(humansChoice) {
     return POSSIBLE_CHOICES.indexOf(humansChoice);
 }
 
@@ -29,18 +25,30 @@ function playRound(humansChoice, computersChoice) {
 }
 
 // start the game
-function playGame(rounds) {
+function playGame(MAXSCORE) {
     computerScore = 0;
     humanScore = 0;
 
-    for(let i = 0; i < rounds; i++) {
+    const gameBtns = document.querySelectorAll("button");
+    const scoreCounter = document.querySelector("#score");
+    const roundResult = document.querySelector("#roundResult");
+
+    gameBtns.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            const humanSelection = getHumanChoice(event.target.textContent);
+            const computerSelection = getComputerChoice();
+            playRound(humanSelection, computerSelection);
+        });
+    });
+
+    /*for(let i = 0; i < rounds; i++) {
         const humanSelection = getHumanChoice();
         const computerSelection = getComputerChoice();
 
         playRound(humanSelection, computerSelection);
-    }
-    console.log("Game over!");
-    logWinner(computerScore, humanScore);
+    }*/
+    //console.log("Game over!");
+    //logWinner(computerScore, humanScore);
 }
 
 // log the winner of a game to the console
@@ -56,7 +64,7 @@ function logWinner(computerScore, humanScore) {
 
 const POSSIBLE_CHOICES = ["rock", "paper", "scissors"];
 
-let computerScore;
-let humanScore;
+let computerScore = 0;
+let humanScore = 0;
 
 playGame(5);
