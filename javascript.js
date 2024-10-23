@@ -13,6 +13,7 @@ function getHumanChoice(humansChoice) {
 function playRound(humansChoice, computersChoice) {
     let outcome = (humansChoice - computersChoice + 3) % 3;
 
+    const displayScores = document.querySelector('#score');
     const displayOutcome = document.querySelector('#result');
 
     if(outcome === 1) {
@@ -24,6 +25,8 @@ function playRound(humansChoice, computersChoice) {
     } else {
         displayOutcome.textContent = "Tie!";
     }
+
+    displayScores.textContent = `${humanScore} / ${computerScore}`;
 }
 
 // start the game
