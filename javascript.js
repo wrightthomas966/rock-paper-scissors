@@ -10,7 +10,10 @@ function getHumanChoice(humansChoice) {
 }
 
 // play a round
-function playRound(humansChoice, computersChoice) {
+function playRound(event) {
+    const humansChoice = getHumanChoice(event.target.textContent);
+    const computersChoice = getComputerChoice();
+
     let outcome = (humansChoice - computersChoice + 3) % 3;
 
     const displayScores = document.querySelector('#score');
@@ -27,6 +30,10 @@ function playRound(humansChoice, computersChoice) {
     }
 
     displayScores.textContent = `${humanScore} / ${computerScore}`;
+
+    if(humanScore === 5 || computerScore === 5) {
+        endGame();
+    }
 }
 
 // start the game
@@ -34,34 +41,26 @@ function playGame(MAXSCORE) {
     computerScore = 0;
     humanScore = 0;
 
-    const gameBtns = document.querySelectorAll("button");
+    gameBtns.forEach((button) => button.addEventListener('click', playRound));
+}
 
-    gameBtns.forEach((button) => {
-        button.addEventListener('click', (event) => {
-            const humanSelection = getHumanChoice(event.target.textContent);
-            const computerSelection = getComputerChoice();
-            playRound(humanSelection, computerSelection);
-        });
-    });
+function endGame() {
+    const endGameMsg = document.createElement('div');
+    endGameMsg.textContent = logWinner();
+    gameContainer.appendChild(endGameMsg);
 
-    /*for(let i = 0; i < rounds; i++) {
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
+    gameBtns.forEach((button) => button.removeEventListener('click', playRound));
 
-        playRound(humanSelection, computerSelection);
-    }*/
-    //console.log("Game over!");
-    //logWinner(computerScore, humanScore);
 }
 
 // log the winner of a game to the console
-function logWinner(computerScore, humanScore) {
+function logWinner() {
     if(humanScore > computerScore) {
-        console.log(`You won! ${humanScore} - ${computerScore + humanScore}`);
+        return `You won!`;
     } else if(computerScore > humanScore) {
-        console.log(`You lost. ${humanScore} - ${computerScore + humanScore}`);
+        return `You lost.`;
     } else {
-        console.log("Tie!");
+        return "Tie!";
     }
 }
 
@@ -69,5 +68,9 @@ const POSSIBLE_CHOICES = ["rock", "paper", "scissors"];
 
 let computerScore = 0;
 let humanScore = 0;
+
+const gameContainer = document.querySelector('#rps-container');
+
+const gameBtns = document.querySelectorAll("button");
 
 playGame(5);
